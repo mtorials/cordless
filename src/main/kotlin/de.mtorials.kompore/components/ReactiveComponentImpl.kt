@@ -11,6 +11,7 @@ open class ReactiveComponentImpl<T>(override val value: T, val block: ComponentB
   override val styles: MutableList<RunnableStyle> = mutableListOf()
   override var element: HTMLElement = document.create.div { }
   override val name: String = "asdasdasd"
+  val hookedComponents: MutableList<UpdatableComponent> = mutableListOf()
 
   init {
     builder.block(this.value)
@@ -18,6 +19,7 @@ open class ReactiveComponentImpl<T>(override val value: T, val block: ComponentB
   }
 
   override fun update(block: T.() -> Unit) {
+    hookedComponents.forEach { it.update() }
     block(this.value)
     updateComponent()
   }
@@ -27,5 +29,10 @@ open class ReactiveComponentImpl<T>(override val value: T, val block: ComponentB
     builder.block(this.value)
     element.clear()
     builder.updateComponent(this)
+  }
+
+  override fun hook(component: UpdatableComponent): ReactiveComponent<T> {
+    hookedComponents.add(component)
+    return this
   }
 }

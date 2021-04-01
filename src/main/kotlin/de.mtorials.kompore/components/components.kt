@@ -29,3 +29,8 @@ inline fun HTMLElement.insertAll(elements: List<HTMLElement>) : HTMLElement {
   elements.forEach { elements -> this.appendChild(elements) }
   return this
 }
+
+fun UpdatableComponent.hookOn(component: UpdatableComponent) : UpdatableComponent {
+  component.hook(this)
+  return this
+}

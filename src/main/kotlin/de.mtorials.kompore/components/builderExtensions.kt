@@ -26,6 +26,6 @@ fun <T> ComponentBuilder.reactive(value: T, block: ComponentBuilder.(T) -> Unit)
   return ReactiveComponent(block)(value).also { this.addComponent(it) }
 }
 
-fun ComponentBuilder.conditional(value: Boolean, block: ComponentBuilder.(Boolean) -> Unit) : ConditionalComponent {
-  return ConditionalComponent(block)(value).also { this.addComponent(it) }
+fun ComponentBuilder.conditional(evaluationFunction: () -> Boolean, block: ComponentBuilder.() -> Unit) : ConditionalComponent {
+  return ConditionalComponent(block)(evaluationFunction).also { this.addComponent(it) }
 }

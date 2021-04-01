@@ -1,8 +1,5 @@
 import components.personTemplate
-import de.mtorials.kompore.components.Component
-import de.mtorials.kompore.components.ListComponent
-import de.mtorials.kompore.components.ReactiveComponent
-import de.mtorials.kompore.components.reactive
+import de.mtorials.kompore.components.*
 import de.mtorials.kompore.templates.button
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -27,49 +24,19 @@ fun main() {
 
   val matti = Person("Matti", 17)
 
-  val root = Component.root {
-    component {
-      name = "heading"
-      heading("This is a heading!")
-      onClick {
-        if (it.ctrlKey) println("You clicked me with control!")
-        else println("You clicked me without control!")
-      }
-    }
-    addComponent(listComponent)
-    val personComponent = personTemplate(matti)
-    component {
-      name = "clicker"
-      text("Click me to make me older")
-      onClick {
-        println("Older")
-        personComponent.update { age++ }
-      }
-    }
-    component {
-      name = "light"
-      style {
-        backgroundColor = Color.lightBlue
-      }
-      para("This is a parahraph")
-      component { text("subcomponent") }
-      component { text("another subconmpnent") }
-      onClick {
-        println("got clicked!")
-        listComponent.add(Person("Tom", 19))
-      }
-    }
-    button("Click me!") {
-      println("Clicked!")
-    }
-  }
-
   val root2 = Component.root {
     val personComponent = reactive(matti) { person ->
       name = "person"
       heading(person.name)
       text("The person has an age of ${person.age} years.")
+      if (person.age >= 18) text("Can drive in EU")
     }
+
+    conditional({ matti.age > 20 }) {
+      name = "conditional"
+      text("Over 20 years!")
+    }.hookOn(personComponent)
+
     button("Hi") {
       println("Make me older!")
       personComponent.update { age++ }

@@ -10,9 +10,10 @@ import org.w3c.dom.HTMLElement
  * Styles are not reactive
  * handlers?
  */
-interface ReactiveComponent<T> : Component {
+interface ReactiveComponent<T> : Component, UpdatableComponent {
   val value: T
-  fun update(block:T.() -> Unit)
+  fun update(block:T.() -> Unit = {})
+  override fun update() = this.update {}
 
   companion object {
     operator fun <T> invoke(block: ComponentBuilder.(T) -> Unit) : (T) -> ReactiveComponent<T> = { value ->

@@ -1,28 +1,37 @@
 package de.mtorials.kompore.components
 
+import kotlinx.browser.document
 import kotlinx.dom.clear
+import kotlinx.html.dom.create
+import kotlinx.html.js.div
+import org.w3c.dom.HTMLElement
 
 open class ConditionalComponentImpl(
-  override var value: Boolean,
-  block: ComponentBuilder.(Boolean) -> Unit,
-) : ReactiveComponentImpl<Boolean>(value, block), ConditionalComponent {
-  override fun show() {
-    this.value = true
-    updateComponent()
+  override val evaluationFunction: () -> Boolean,
+  block: ComponentBuilder.() -> Unit,
+) : ConditionalComponent, MutableComponent {
+
+  var builder: ComponentBuilder = ComponentBuilder()
+  override val styles: MutableList<RunnableStyle> = mutableListOf()
+  override val childComponents: MutableList<Component> = mutableListOf()
+  override var element: HTMLElement = document.create.div { }
+  override val name: String = ""
+  val hookedComponents: MutableList<UpdatableComponent> = mutableListOf()
+
+  init {
+    builder.block()
+    builder.updateComponent(this)
+    if (!evaluationFunction()) element.clear()
   }
 
-  override fun hide() {
-    this.value = false
-    updateComponent()
+  override fun update() {
+    hookedComponents.forEach { it.update() }
+    if (evaluationFunction()) builder.updateComponent(this)
+    else element.clear()
   }
 
-  override fun update(block: (Boolean) -> Unit) {
-    block(value)
-    updateComponent()
-  }
-
-  override fun updateComponent() {
-    if (value) super.updateComponent()
-    else this.element.clear()
+  override fun hook(component: UpdatableComponent): ConditionalComponent {
+    hookedComponents.add(component)
+    return this
   }
 }

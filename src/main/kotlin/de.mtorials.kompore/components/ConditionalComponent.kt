@@ -1,13 +1,12 @@
 package de.mtorials.kompore.components
 
-interface ConditionalComponent: ReactiveComponent<Boolean> {
+interface ConditionalComponent: ParentComponent, UpdatableComponent {
 
-  fun show()
-  fun hide()
+  val evaluationFunction: () -> Boolean
 
   companion object {
-    operator fun invoke(block: ComponentBuilder.(Boolean) -> Unit) : (Boolean) -> ConditionalComponent = { value ->
-      ConditionalComponentImpl(value, block)
+    operator fun invoke(block: ComponentBuilder.() -> Unit) : (() -> Boolean) -> ConditionalComponent = { function ->
+      ConditionalComponentImpl(function, block)
     }
   }
 }
