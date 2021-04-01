@@ -1,7 +1,7 @@
 package de.mtorials.kompore.components
 
 import kotlinx.browser.document
-import kotlinx.css.CSSBuilder
+import kotlinx.css.*
 import kotlinx.html.TagConsumer
 import kotlinx.html.dom.create
 import org.w3c.dom.HTMLElement
@@ -19,8 +19,14 @@ interface Component {
       componentBuilder.build()
     }
 
-    fun root(block: ComponentBuilder.() -> Unit) : Component {
+    fun root(theme: RunnableStyle = {
+      body {
+        padding = "0"
+        margin = "0"
+      }
+    }, block: ComponentBuilder.() -> Unit) : Component {
       val componentBuilder = ComponentBuilder()
+      componentBuilder.generalStyle(theme)
       componentBuilder.name = "root"
       componentBuilder.block()
       return componentBuilder.build()

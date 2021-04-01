@@ -1,6 +1,10 @@
 import components.personTemplate
 import de.mtorials.kompore.components.*
+import de.mtorials.kompore.styling.fullWidth
 import de.mtorials.kompore.templates.button
+import de.mtorials.kompore.templates.buttonPrimary
+import de.mtorials.kompore.templates.container
+import de.mtorials.kompore.theme.DarkTheme
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.css.CSSBuilder
@@ -24,22 +28,29 @@ fun main() {
 
   val matti = Person("Matti", 17)
 
-  val root2 = Component.root {
-    val personComponent = reactive(matti) { person ->
-      name = "person"
-      heading(person.name)
-      text("The person has an age of ${person.age} years.")
-      if (person.age >= 18) text("Can drive in EU")
+  val root2 = Component.root(DarkTheme.theme) {
+    container {
+      fullWidth()
+      val personComponent = reactive(matti) { person ->
+        name = "person"
+        heading(person.name)
+        text("The person has an age of ${person.age} years.")
+        if (person.age >= 18) text("Can drive in EU")
+      }
+
+      conditional({ matti.age > 20 }) {
+        name = "conditional"
+        text("Over 20 years!")
+      }.hookOn(personComponent)
+
+      button("Hi") {
+        println("Make me older!")
+        personComponent.update { age++ }
+      }
     }
-
-    conditional({ matti.age > 20 }) {
-      name = "conditional"
-      text("Over 20 years!")
-    }.hookOn(personComponent)
-
-    button("Hi") {
-      println("Make me older!")
-      personComponent.update { age++ }
+    container {
+      heading("This is another container")
+      buttonPrimary("Hey") {}
     }
   }
 

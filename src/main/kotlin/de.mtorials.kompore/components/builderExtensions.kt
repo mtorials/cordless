@@ -23,9 +23,9 @@ fun <T> ComponentBuilder.list(list: List<T> = listOf(), block: ComponentBuilder.
 }
 
 fun <T> ComponentBuilder.reactive(value: T, block: ComponentBuilder.(T) -> Unit) : ReactiveComponent<T> {
-  return ReactiveComponent(block)(value).also { this.addComponent(it) }
+  return ReactiveComponent(block)(value).also { name = this.newName() }.also { this.addComponent(it) }
 }
 
 fun ComponentBuilder.conditional(evaluationFunction: () -> Boolean, block: ComponentBuilder.() -> Unit) : ConditionalComponent {
-  return ConditionalComponent(block)(evaluationFunction).also { this.addComponent(it) }
+  return ConditionalComponent(block)(evaluationFunction).also { name = this.newName() }.also { this.addComponent(it) }
 }

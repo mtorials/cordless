@@ -19,8 +19,8 @@ open class ReactiveComponentImpl<T>(override val value: T, val block: ComponentB
   }
 
   override fun update(block: T.() -> Unit) {
-    hookedComponents.forEach { it.update() }
     block(this.value)
+    hookedComponents.forEach { it.update() }
     updateComponent()
   }
 
