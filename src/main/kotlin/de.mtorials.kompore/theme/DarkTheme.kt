@@ -19,8 +19,8 @@ object DarkTheme {
   val theme : RunnableStyle = {
 
     "*" {
-      color = foreground
       fontFamily = "Inconsolata, sans-serif"
+      color = foreground
     }
 
     body {

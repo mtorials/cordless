@@ -1,5 +1,6 @@
 package de.mtorials.kompore.components
 
+import de.mtorials.kompore.theme.DarkTheme
 import kotlinx.browser.document
 import kotlinx.css.*
 import kotlinx.html.TagConsumer
@@ -12,19 +13,15 @@ interface Component {
   val name: String
 
   companion object {
-    operator fun invoke(name: String, block: ComponentBuilder.() -> Unit) : ComponentTemplate = {
+    operator fun invoke(name: String , block: ComponentBuilder.() -> Unit) : ComponentTemplate = {
       val componentBuilder = ComponentBuilder()
       componentBuilder.name = name
       componentBuilder.block()
       componentBuilder.build()
     }
 
-    fun root(theme: RunnableStyle = {
-      body {
-        padding = "0"
-        margin = "0"
-      }
-    }, block: ComponentBuilder.() -> Unit) : Component {
+    fun root(title: String, theme: RunnableStyle = DarkTheme.theme, block: ComponentBuilder.() -> Unit) : Component {
+      document.title = title
       val componentBuilder = ComponentBuilder()
       componentBuilder.generalStyle(theme)
       componentBuilder.name = "root"

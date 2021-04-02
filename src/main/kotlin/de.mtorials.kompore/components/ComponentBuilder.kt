@@ -60,7 +60,7 @@ class ComponentBuilder {
   fun onMouseOver(block: (MouseEvent) -> Unit) { onMousOver = block }
 
   fun build() : Component = object : Component {
-    override val element: HTMLElement = document.create.div(this@ComponentBuilder.name)
+    override val element: HTMLElement = document.create.div(classes = this@ComponentBuilder.name)
     override val name: String = this@ComponentBuilder.name
     override val styles: MutableList<RunnableStyle> = this@ComponentBuilder.styles
     init {
@@ -73,10 +73,10 @@ class ComponentBuilder {
   }
 
   fun updateComponent(component: MutableComponent) {
-    component.element.setAttribute("class", name)
     component.element.clear()
     component.styles.clear()
     component.styles.addAll(styles)
+    component.element.addClass(name)
     classes.forEach { component.element.addClass(it) }
     childComponents.forEach {
       component.element.insert(it.element)
@@ -87,4 +87,8 @@ class ComponentBuilder {
   }
 
   fun newName() : String = this.name + childComponents.size
+
+  companion object {
+    operator fun invoke(block: ComponentBuilder.() -> Unit) = ComponentBuilder().apply(block).build()
+  }
 }

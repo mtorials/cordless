@@ -13,7 +13,8 @@ fun ComponentBuilder.button(label: String, onClick: (MouseEvent) -> Unit) {
 }
 
 fun ComponentBuilder.buttonPrimary(label: String, onClick: (MouseEvent) -> Unit) {
-  Component("button") {
+  Component(this.newName()) {
+    addClass("button")
     addClass("primary")
     text(label)
     onClick(onClick)

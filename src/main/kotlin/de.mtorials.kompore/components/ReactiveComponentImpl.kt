@@ -6,7 +6,7 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import org.w3c.dom.HTMLElement
 
-open class ReactiveComponentImpl<T>(override val value: T, val block: ComponentBuilder.(T) -> Unit) : ReactiveComponent<T>, MutableComponent {
+open class ReactiveComponentImpl<T>(override var value: T, val block: ComponentBuilder.(T) -> Unit) : ReactiveComponent<T>, MutableComponent {
   var builder: ComponentBuilder = ComponentBuilder()
   override val styles: MutableList<RunnableStyle> = mutableListOf()
   override var element: HTMLElement = document.create.div { }
@@ -34,5 +34,11 @@ open class ReactiveComponentImpl<T>(override val value: T, val block: ComponentB
   override fun hook(component: UpdatableComponent): ReactiveComponent<T> {
     hookedComponents.add(component)
     return this
+  }
+
+  override fun set(value: T) {
+    this.value = value
+    hookedComponents.forEach { it.update() }
+    this.updateComponent()
   }
 }

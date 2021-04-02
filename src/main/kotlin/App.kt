@@ -1,6 +1,8 @@
+import components.RoomSelection
 import components.personTemplate
 import de.mtorials.kompore.components.*
 import de.mtorials.kompore.styling.fullWidth
+import de.mtorials.kompore.styling.isSecondary
 import de.mtorials.kompore.templates.button
 import de.mtorials.kompore.templates.buttonPrimary
 import de.mtorials.kompore.templates.container
@@ -10,6 +12,7 @@ import kotlinx.browser.window
 import kotlinx.css.CSSBuilder
 import kotlinx.css.Color
 import kotlinx.css.backgroundColor
+import kotlinx.css.color
 import kotlinx.html.dom.create
 import kotlinx.html.js.style
 import kotlinx.html.unsafe
@@ -28,20 +31,27 @@ fun main() {
 
   val matti = Person("Matti", 17)
 
-  val root2 = Component.root(DarkTheme.theme) {
+  val personComponent = ReactiveComponent<Person> { person ->
+    name = "person"
+    heading(person.name)
+    text("The person has an age of ${person.age} years.")
+    if (person.age >= 18) text("Can drive in EU")
+  }(matti)
+
+  val root2 = Component.root("cordless") {
+    addComponent(RoomSelection.roomSelectorTemplate())
     container {
       fullWidth()
-      val personComponent = reactive(matti) { person ->
-        name = "person"
-        heading(person.name)
-        text("The person has an age of ${person.age} years.")
-        if (person.age >= 18) text("Can drive in EU")
-      }
+      addComponent(personComponent)
 
-      conditional({ matti.age > 20 }) {
-        name = "conditional"
+      conditional({ personComponent.value.age > 20 }) {
         text("Over 20 years!")
       }.hookOn(personComponent)
+
+      container {
+        isSecondary()
+        heading("This is another container")
+      }
 
       button("Hi") {
         println("Make me older!")
@@ -50,7 +60,9 @@ fun main() {
     }
     container {
       heading("This is another container")
-      buttonPrimary("Hey") {}
+      buttonPrimary("Hendrik") {
+        personComponent.set(Person("Hendrik", 25))
+      }
     }
   }
 

@@ -11,8 +11,9 @@ import org.w3c.dom.HTMLElement
  * handlers?
  */
 interface ReactiveComponent<T> : Component, UpdatableComponent {
-  val value: T
+  var value: T
   fun update(block:T.() -> Unit = {})
+  fun set(value: T)
   override fun update() = this.update {}
 
   companion object {

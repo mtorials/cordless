@@ -1,4 +1,4 @@
-package routing
+package de.mtorials.kompore.routing
 
 import kotlinx.browser.window
 
