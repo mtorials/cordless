@@ -1,12 +1,8 @@
-package components
+package de.mtorials.cordless.components
 
 import Person
-import de.mtorials.kompore.components.Component
-import de.mtorials.kompore.components.ComponentBuilder
-import de.mtorials.kompore.components.ComponentTemplate
 import de.mtorials.kompore.components.ReactiveComponent
 import kotlinx.css.*
-import org.w3c.dom.events.MouseEvent
 
 val personTemplate = ReactiveComponent { person: Person ->
   name = "person"

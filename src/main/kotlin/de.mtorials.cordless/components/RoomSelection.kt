@@ -1,6 +1,5 @@
-package components
+package de.mtorials.cordless.components
 
-import Room
 import de.mtorials.kompore.components.ComponentBuilder
 import de.mtorials.kompore.components.ReactiveComponent
 import de.mtorials.kompore.styling.fullWidth

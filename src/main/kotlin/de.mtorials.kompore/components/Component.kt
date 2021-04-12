@@ -1,8 +1,7 @@
 package de.mtorials.kompore.components
 
-import de.mtorials.kompore.theme.DarkTheme
+import de.mtorials.kompore.styling.theme.DarkTheme
 import kotlinx.browser.document
-import kotlinx.css.*
 import kotlinx.html.TagConsumer
 import kotlinx.html.dom.create
 import org.w3c.dom.HTMLElement

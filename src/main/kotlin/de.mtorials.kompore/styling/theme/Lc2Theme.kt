@@ -1,12 +1,13 @@
-package de.mtorials.kompore.theme
+package de.mtorials.kompore.styling.theme
 
 import de.mtorials.kompore.components.RunnableStyle
 import kotlinx.css.*
 import kotlinx.css.properties.boxShadow
 
-object DarkTheme {
+object Lc2Theme {
 
-  val backgroundColor = Color("#2F2F2F")
+  val backgroundDarkColor = Color.black
+  val backgroundColor = Color("#30374A")
   val middlegroundColor = Color("#424242")
   val primaryColor = Color("#FF8C00")
   val secondaryColor = Color("#172647")
@@ -26,7 +27,7 @@ object DarkTheme {
     body {
       padding = "0.7rem"
       margin = "0"
-      backgroundColor = DarkTheme.backgroundColor
+      backgroundColor = backgroundDarkColor
     }
 
     ".root" {
@@ -47,7 +48,7 @@ object DarkTheme {
       padding = "1rem"
       gap = standardGap
       borderRadius = standardRadius
-      backgroundColor = middlegroundColor
+      backgroundColor = Lc2Theme.backgroundColor
     }
 
     ".button" {
