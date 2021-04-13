@@ -1,4 +1,4 @@
 package de.mtorials.kompore.components
 
-typealias ComponentTemplate = ComponentBuilder.() -> Component
-typealias ReactiveComponentTemplate<T> = ComponentBuilder.(T) -> ReactiveComponent<T>
+typealias StandardComponentTemplate = () -> Component
+typealias ReactiveComponentTemplate<T> = (T) -> ReactiveComponent<T>

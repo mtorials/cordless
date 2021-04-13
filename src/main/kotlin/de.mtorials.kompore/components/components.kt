@@ -1,13 +1,11 @@
 package de.mtorials.kompore.components
 
+import de.mtorials.kompore.state.Property
 import kotlinx.browser.document
 import kotlinx.css.CSSBuilder
 import kotlinx.html.dom.create
 import kotlinx.html.js.div
-import kotlinx.html.js.style
-import kotlinx.html.unsafe
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.HTMLStyleElement
 
 typealias RunnableStyle = CSSBuilder.() -> Unit
 
@@ -32,5 +30,10 @@ inline fun HTMLElement.insertAll(elements: List<HTMLElement>) : HTMLElement {
 
 fun UpdatableComponent.hookOn(component: UpdatableComponent) : UpdatableComponent {
   component.hook(this)
+  return this
+}
+
+fun UpdatableComponent.hookOnProperty(property: Property<*>) : UpdatableComponent {
+  property.hookComponent(this)
   return this
 }

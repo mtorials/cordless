@@ -17,7 +17,7 @@ interface ReactiveComponent<T> : Component, UpdatableComponent {
   override fun update() = this.update {}
 
   companion object {
-    operator fun <T> invoke(block: ComponentBuilder.(T) -> Unit) : (T) -> ReactiveComponent<T> = { value ->
+    operator fun <T> invoke(block: ComponentBuilder<MutableReactiveComponent<T>>.(T) -> Unit) : (T) -> ReactiveComponent<T> = { value ->
       ReactiveComponentImpl(value, block)
     }
   }

@@ -8,10 +8,10 @@ import org.w3c.dom.HTMLElement
 
 open class ConditionalComponentImpl(
   override val evaluationFunction: () -> Boolean,
-  block: ComponentBuilder.() -> Unit,
-) : ConditionalComponent, MutableComponent {
+  block: ComponentBuilder<MutableConditionalComponent>.() -> Unit,
+) : MutableConditionalComponent {
 
-  var builder: ComponentBuilder = ComponentBuilder()
+  var builder = ComponentBuilder<MutableConditionalComponent>()
   override val styles: MutableList<RunnableStyle> = mutableListOf()
   override val childComponents: MutableList<Component> = mutableListOf()
   override var element: HTMLElement = document.create.div { }

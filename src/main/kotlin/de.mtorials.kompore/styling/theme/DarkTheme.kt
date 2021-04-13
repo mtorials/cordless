@@ -64,16 +64,12 @@ object DarkTheme {
       backgroundColor = secondaryColor
     }
 
-    ".secondary:hover" {
-      backgroundColor = secondaryColor.lighten(30)
-    }
-
     ".primary" {
       backgroundColor = primaryColor
     }
 
-    ".primary:hover" {
-      backgroundColor = primaryColor.darken(30)
+    ".warning" {
+      backgroundColor = warningColor
     }
   }
 }

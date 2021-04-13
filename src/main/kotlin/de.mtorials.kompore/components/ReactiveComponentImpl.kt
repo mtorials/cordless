@@ -6,8 +6,8 @@ import kotlinx.html.dom.create
 import kotlinx.html.js.div
 import org.w3c.dom.HTMLElement
 
-open class ReactiveComponentImpl<T>(override var value: T, val block: ComponentBuilder.(T) -> Unit) : ReactiveComponent<T>, MutableComponent {
-  var builder: ComponentBuilder = ComponentBuilder()
+open class ReactiveComponentImpl<T>(override var value: T, val block: ComponentBuilder<MutableReactiveComponent<T>>.(T) -> Unit) : MutableReactiveComponent<T> {
+  var builder = ComponentBuilder<MutableReactiveComponent<T>>()
   override val styles: MutableList<RunnableStyle> = mutableListOf()
   override var element: HTMLElement = document.create.div { }
   override val name: String = "asdasdasd"
