@@ -7,7 +7,8 @@ import de.mtorials.kompore.components.StandardComponentBuilder
 import org.w3c.dom.events.MouseEvent
 
 fun ComponentBuilder<*>.button(label: String, onClick: (MouseEvent) -> Unit) {
-  Component("button") {
+  Component(this.newName()) {
+    addClass("button")
     addClass("secondary")
     text(label)
     onClick(onClick)

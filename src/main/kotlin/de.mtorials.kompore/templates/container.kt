@@ -3,16 +3,18 @@ package de.mtorials.kompore.templates
 import de.mtorials.kompore.components.Component
 import de.mtorials.kompore.components.ComponentBuilder
 import de.mtorials.kompore.components.StandardComponentBuilder
+import de.mtorials.kompore.styling.isSecondary
 import org.w3c.dom.events.MouseEvent
 
-fun StandardComponentBuilder.container(block: StandardComponentBuilder.() -> Unit) {
+fun ComponentBuilder<*>.container(block: ComponentBuilder<*>.() -> Unit) {
   Component(newName()) {
     addClass("container")
+    isSecondary()
     block()
   }().let { this.addComponent(it) }
 }
 
-fun StandardComponentBuilder.backgroundContainer(block: StandardComponentBuilder.() -> Unit) {
+fun ComponentBuilder<*>.containerBackground(block: ComponentBuilder<*>.() -> Unit) {
   Component(this.newName()) {
     addClass("background")
     addClass("container")

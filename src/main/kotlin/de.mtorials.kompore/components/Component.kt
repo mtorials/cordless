@@ -25,7 +25,7 @@ interface Component {
       }
     } }
 
-    fun root(title: String, theme: RunnableStyle = DarkTheme.theme, block: ComponentBuilder<MutableComponent>.() -> Unit) : Component = object : MutableComponent {
+    fun root(title: String, theme: RunnableStyle = {}, block: ComponentBuilder<MutableComponent>.() -> Unit) : Component = object : MutableComponent {
 
       override val element: HTMLElement = document.create.div {  }
       override val styles: MutableList<RunnableStyle> = mutableListOf()

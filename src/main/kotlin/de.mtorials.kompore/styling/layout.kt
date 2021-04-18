@@ -5,7 +5,13 @@ import kotlinx.css.LinearDimension
 import kotlinx.css.width
 
 fun ComponentBuilder<*>.fullWidth() {
-  style {
-    width = LinearDimension("100%")
-  }
+  this.addClass("full-width")
+}
+
+fun ComponentBuilder<*>.fullHeight() {
+  this.addClass("full-height")
+}
+
+fun ComponentBuilder<*>.background() {
+  this.addClass("background")
 }

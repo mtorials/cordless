@@ -1,3 +1,90 @@
-.test {
-    background-color: red;
+:root {
+    --background-color: hsl(220, 29%, 16%);
+    --middleground-color: hsl(220, 39%, 22%);
+    --warning-color: hsl(12, 84%, 52%);
+    --primary-color: hsl(44, 84%, 52%);
+    --secondary-color: hsl(220, 62%, 35%);
+
+    --standard-gap: 0.5rem;
+    --standard-radius: 7px;
+}
+
+* {
+    font-family: 'Iosevka Slab', Inconsolata, sans-serif;
+    color: white;
+}
+
+body {
+    margin: 0;
+    background-color: var(--background-color);
+    height: 100vh;
+}
+
+.root {
+    display: flex;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: var(--standard-gap);
+    border-radius: var(--standard-radius);
+    gap: var(--standard-gap);
+}
+
+.heading {
+    font-size: 1.7em;
+    font-weight: bold;
+}
+
+.input {
+    outline: none;
+    border-radius: var(--standard-radius);
+    border-style: none;
+    background-color: var(--primary-color);
+}
+
+.button {
+    border-radius: var(--standard-gap);
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    display: inline;
+}
+
+.background {
+    background-color: var(--background-color);
+}
+
+.button:hover {
+    filter: brightness(70%);
+}
+
+.primary {
+    background-color: var(--primary-color);
+}
+
+.secondary {
+    background-color: var(--secondary-color);
+}
+
+.warning {
+    background-color: var(--warning-color);
+}
+
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.horizontal {
+    display: flex;
+    gap: var(--standard-gap)
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+    gap: var(--standard-gap);
 }

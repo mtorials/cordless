@@ -29,6 +29,13 @@ object DarkTheme {
       backgroundColor = DarkTheme.backgroundColor
     }
 
+    input {
+      outline = Outline.none
+      borderRadius = standardRadius
+      borderStyle = BorderStyle.none
+      backgroundColor = middlegroundColor
+    }
+
     ".root" {
       display = Display.flex
       gap = standardGap
@@ -58,6 +65,14 @@ object DarkTheme {
       paddingBottom = 0.5.rem
       borderRadius = standardRadius
       boxShadow(Color.gray.withAlpha(0.3), 0.px, 0.px, 2.px, 2.px)
+    }
+
+    ".full-width" {
+      width = LinearDimension("100%")
+    }
+
+    ".full-height" {
+      height = LinearDimension("100%")
     }
 
     ".secondary" {
