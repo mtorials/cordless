@@ -1,5 +1,7 @@
 package de.mtorials.cordless.persistence
 
+import de.mtorials.dialphone.api.ids.RoomId
+import de.mtorials.dialphone.api.ids.roomId
 import kotlinx.browser.window
 
 class PersitenceManager {
@@ -10,11 +12,11 @@ class PersitenceManager {
 
   fun getToken() : String? = window.localStorage.getItem(TOKEN_COOKIE_NAME)
 
-  fun setActiveRoom(id: String) {
-    window.localStorage.setItem(ACTIVE_ROOM_ID, id)
+  fun setActiveRoom(id: RoomId) {
+    window.localStorage.setItem(ACTIVE_ROOM_ID, id.toString())
   }
 
-  fun getActiveRoom() : String = window.localStorage.getItem(ACTIVE_ROOM_ID) ?: ""
+  fun getActiveRoom() : RoomId = window.localStorage.getItem(ACTIVE_ROOM_ID)?.roomId() ?: RoomId("")
 
   companion object {
     const val TOKEN_COOKIE_NAME = "cordless_token"

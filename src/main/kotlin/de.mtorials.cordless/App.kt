@@ -2,10 +2,12 @@ package de.mtorials.cordless
 
 import de.mtorials.cordless.components.messagesTemplate
 import de.mtorials.cordless.persistence.PersitenceManager
-import de.mtorials.dialphone.DialPhone
-import de.mtorials.dialphone.entities.Room
-import de.mtorials.dialphone.listener.MessageListener
-import de.mtorials.dialphone.sendTextMessage
+import de.mtorials.dialphone.api.ids.RoomId
+import de.mtorials.dialphone.core.DialPhone
+import de.mtorials.dialphone.core.entities.room.JoinedRoom
+import de.mtorials.dialphone.core.entities.room.JoinedRoomImpl
+import de.mtorials.dialphone.core.listeners.ListenerAdapter
+import de.mtorials.dialphone.core.sendTextMessage
 import de.mtorials.kompore.components.*
 import de.mtorials.kompore.state.Property
 import de.mtorials.kompore.styling.fullHeight
@@ -15,8 +17,10 @@ import de.mtorials.kompore.templates.*
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.promise
 import kotlinx.css.CSSBuilder
+import kotlinx.css.label
 import kotlinx.html.dom.create
 import kotlinx.html.js.style
 import kotlinx.html.unsafe
@@ -25,22 +29,27 @@ class App {
 
   private val persistence = PersitenceManager()
 
-  private val state = CordlessState(
-    Property("") { messageComponent.set(messageListener.getMessages(it).toMutableList()); persistence.setActiveRoom(it) }
+  private val state : CordlessState = CordlessState(
+    Property(RoomId("")) {
+      // messageComponent.set(messageListener.getMessages(it).toMutableList());
+      persistence.setActiveRoom(it)
+    }
   )
   private var phone : DialPhone? = null
 
-  private val messageListener: MessageListener = MessageListener(receiveOld = true) {
-    if (state.activeRoomId.value != it.roomFuture.id) return@MessageListener
-    println("${it.message.author.id} :: ${it.message.body}")
-    messageComponent.update { add(it.message) }
+  private val messageListener = ListenerAdapter {
+    onRoomMessageReceived list@{
+      if (state.activeRoomId.value != it.room.id) return@list
+      println("${it.message.author.id} :: ${it.message.content.body}")
+      messageComponent.update { add(it.message) }
+    }
   }
+
   private val messageComponent = messagesTemplate(mutableListOf())
 
   suspend fun main() {
 
-    phone = DialPhone {
-      homeserverUrl = "https://matrix.mtorials.de"
+    phone = DialPhone("https://matrix.mtorials.de") {
       withToken(persistence.getToken() ?: handleLogin())
       addListeners(
         messageListener
@@ -49,19 +58,20 @@ class App {
 
     state.activeRoomId.value = persistence.getActiveRoom()
 
-    val roomListTemplate = ReactiveComponent<List<Room>> {
+    val roomListTemplate = ReactiveComponent<List<JoinedRoom>> {
       name = "roomList"
       addClass("container")
       fullHeight()
       it.forEach { room ->
-        if (state.activeRoomId.value == room.id) buttonWarning(room.name) {}
-        else buttonPrimary(room.name) {
+        if (state.activeRoomId.value == room.id) buttonWarning(room.name ?: room.members[0].displayName ?: room.members[0].id.toString() ) {}
+        else buttonPrimary(room.name ?: "-") {
           state.activeRoomId.value = room.id
         }
       }
     }
 
-    val rooms = (phone!!.getJoinedRoomFutures().map { it.receive() }).toMutableList()
+    val rooms = (phone!!.getJoinedRooms().toMutableList())
+    val invites = phone!!.getInvitedRoomActions()
 
     val root = Component.root("cordless") {
       boxVertical {
@@ -76,7 +86,14 @@ class App {
               text("This is where the voice channels will go!")
             }
             container {
-              text("This is space for something else")
+              reactive(invites) { invites ->
+                invites.forEach { room ->
+                  text("Invite:")
+                  button(room.name ?: "-") {
+                    MainScope().launch { room.join() }
+                  }
+                }
+              }
             }
           }
         }
@@ -104,7 +121,7 @@ class App {
             reactive(null) {
               val room = rooms.filter { it.id == state.activeRoomId.value }[0]
               boxVertical { room.members.forEach { member ->
-                button(member.id) {}
+                button(member.id.toString()) {}
               } }
             }.hookOnProperty(state.activeRoomId)
           }
@@ -132,7 +149,7 @@ class App {
 
   private fun sendMessage(phone: DialPhone, inputBinding: Property<String>) {
     MainScope().promise {
-      phone!!.getJoinedRoomFutureById(state.activeRoomId.value)?.sendTextMessage(inputBinding.value)
+      phone!!.getJoinedRoomById(state.activeRoomId.value)?.sendTextMessage(inputBinding.value)
       inputBinding.value = ""
     }
   }

@@ -1,5 +1,5 @@
 plugins {
-    kotlin("js") version "1.4.31"
+    kotlin("js") version "1.6.21"
     //kotlin("plugin.serialization") version "1.4.31"
 }
 
@@ -25,7 +25,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
 
     // My own
-    implementation("de.mtorials:dial-phone:v1.1.2-alpha")
+    implementation("de.mtorials.dial-phone:dial-phone-api-js:0.2.1")
+    implementation("de.mtorials.dial-phone:dial-phone-core-js:0.2.1")
+    implementation("de.mtorials.dial-phone:dial-phone-api-js:0.2.1")
 }
 
 kotlin {
